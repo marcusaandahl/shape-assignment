@@ -14,4 +14,4 @@ Error messages and validations are also integrated.
 - [utils/validations/weatherApiValidation.js](https://github.com/marcusaandahl/shape-assignment/blob/master/utils/validations/weatherApiValidation.js "weatherApiValidation.js")
 - [utils/si.js](https://github.com/marcusaandahl/shape-assignment/blob/master/utils/si.js "si.js")
 - [utils/analytics/apiUsage.js](https://github.com/marcusaandahl/shape-assignment/blob/master/utils/analytics/apiUsage.js "apiUsage.js")
-- [db/](https://github.com/marcusaandahl/shape-assignment/blob/master/db/ "db")
+- [db/usage.json](https://github.com/marcusaandahl/shape-assignment/blob/master/db/usage.json "usage.json")
