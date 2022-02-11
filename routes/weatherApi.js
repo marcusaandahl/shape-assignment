@@ -4,8 +4,9 @@ const router = express.Router();
 const siUtils = require('../utils/si'); //METRIC/IMPERIAL CONVERSION
 const weatherApiValidation = require('../utils/validations/weatherApiValidation'); //VALIDATIONS
 const apiUsage = require('../utils/analytics/apiUsage');
+require('dotenv').config();
 
-const OPENWEATHER_API_KEY = '9710517471879ab8156c44587d0a9b60'; //API KEY TO BE SAFELY STORED
+const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY; //API KEY TO BE SAFELY STORED
 
 // SUMMARY RETURN TOMORROWS TEMPERATURES
 router.get('/summary', (req, res) => {
