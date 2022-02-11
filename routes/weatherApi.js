@@ -39,6 +39,8 @@ router.get('/location/:latlong', (req, res) => {
   }
 });
 
+
+// FETCH FUNCTIONS
 // Tomorrows Temperatures
 async function getTomorrowWeatherOfLocations(req) {
   var locs = req.query.locations.split(',').map(loc => { //Formats location query
@@ -70,11 +72,12 @@ async function getTomorrowWeatherOfLocations(req) {
         })
       }
     }
-    locData.length > 0 ? totalData.push(locData[0]) : totalData.push(`Location ${locs.indexOf(loc)} too cold`); //Return too cold, if temperature under the given param
+    locData.length > 0 ? totalData.push(locData[0]) : totalData.push(`Location ${locs.indexOf(loc)} at ${loc[0]}${loc[1]} too cold`); //Return too cold, if temperature under the given param
   }
   return totalData;
 }
 
+//Temperatures for the next 5 days
 async function getLongTermWeatherOfLocations(req) {
   var location = [`${req.params.latlong[0]}${req.params.latlong[1]}`, `${req.params.latlong[2]}${req.params.latlong[3]}`]; //Formats coordinates
   const totalData = {
@@ -87,8 +90,14 @@ async function getLongTermWeatherOfLocations(req) {
     if (index < 6 ) { //Only gets next 5 days + today
       totalData.weather.push({
         utcDate: dailyData.dt,
-        minTemp: dailyData.temp.min,
-        maxTemp: dailyData.temp.max,
+        celsius: {
+          minTemp: siUtils.kelvinToC(parseInt(dailyData.temp.min)),
+          maxTemp: siUtils.kelvinToC(parseInt(dailyData.temp.max)),
+        },
+        fahrenheit: {
+          minTemp: siUtils.kelvinToF(parseInt(dailyData.temp.min)),
+          maxTemp: siUtils.kelvinToF(parseInt(dailyData.temp.max)),
+        }
       });
     }
   })
