@@ -1,6 +1,7 @@
 // POSSIBLE REGEX INCONSISTENCIES
 const intRegex = /^\d+$/g; //Any amount of digits
 const locRegex = /^(\d{4})(,\d{4})*$/g; //4 digits + infinite x 4 digits seperated by commas
+const singLocRegex = /^(\d{4})$/g; //4 digits only
 
 function validateSummaryParams(query) {
     if (query.unit && query.temperature && query.locations) {
@@ -22,7 +23,7 @@ function validateSummaryParams(query) {
 
 function validateLocationParams(params) {
     if (params.latlong) {
-        if (! locRegex.test(params.latlong)) {
+        if (! singLocRegex.test(params.latlong)) {
             throw new Error('Locations invalid');
         }
     } else {

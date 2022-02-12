@@ -1,14 +1,22 @@
 const fs = require('fs');
 
 // Makes sure the daily quota is not exceeded
-function useRequest() {
+function useRequest(amount) {
     var usage = JSON.parse(fs.readFileSync('db/usage.json'));
-    if (usage.usage < usage.limit){
-        usage.usage += 1;
-        fs.writeFileSync('db/usage.json', JSON.stringify(usage, null, 4));
+    if (amount) {
+        if ((usage.limit - usage.usage) >= amount){
+            usage.usage += amount;
+        } else {
+            throw new Error('Usage limit reached');
+        }
     } else {
-        throw new Error('Usage limit reached');
+        if (usage.usage < usage.limit){
+            usage.usage += 1;
+        } else {
+            throw new Error('Usage limit reached');
+        }
     }
+    fs.writeFileSync('db/usage.json', JSON.stringify(usage, null, 4));
 }
 
 
@@ -26,9 +34,6 @@ function useRequest() {
  * 
  * Furthermore, When making an API request, we would make the API request, and store the data. In such way, repeated requests with
  * similar locations would be unneccessary, and API calls would be saved for newer data.
- * 
- * I will gladly expand on it all, and I am deeply fustrated I couldn't see my idea through, but I hope we get to talk about it
- * either way.
  */
 
 

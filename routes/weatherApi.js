@@ -47,10 +47,12 @@ async function getTomorrowWeatherOfLocations(req) {
   var locs = req.query.locations.split(',').map(loc => { //Formats location query
     return [`${loc[0]}${loc[1]}`, `${loc[2]}${loc[3]}`]
   })
+
+  apiUsage.useRequest(locs.length);
+
   const totalData = [];
   for await (const loc of locs) { // Fetches data for each location
     const locData = [];
-    apiUsage.useRequest();
     const data = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${parseInt(loc[0])}&lon=${parseInt(loc[1])}&exclude=alerts,hourly,current,minutely&appid=${OPENWEATHER_API_KEY}`);
     if (req.query.unit === 'celsius') { //returns in celsius
       if (siUtils.kelvinToC(parseInt(data.data.daily[1].temp.min)) >= (parseInt(req.query.temperature))) {
@@ -81,11 +83,11 @@ async function getTomorrowWeatherOfLocations(req) {
 //Temperatures for the next 5 days
 async function getLongTermWeatherOfLocations(req) {
   var location = [`${req.params.latlong[0]}${req.params.latlong[1]}`, `${req.params.latlong[2]}${req.params.latlong[3]}`]; //Formats coordinates
+  apiUsage.useRequest();
   const totalData = {
     latlong: `${location[0]}${location[1]}`,
     weather: []
   };
-  apiUsage.useRequest();
   const data = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${parseInt(location[0])}&lon=${parseInt(location[1])}&exclude=alerts,hourly,current,minutely&appid=${OPENWEATHER_API_KEY}`);
   data.data.daily.forEach((dailyData, index) => { //Formats in an array
     if (index < 6 ) { //Only gets next 5 days + today
